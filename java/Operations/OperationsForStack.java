@@ -47,9 +47,12 @@ public class OperationsForStack {
     {
         System.out.println("Your original stack: " + stack.toString());
         printStackIterative(stack);
+        
         while(!revStack.isEmpty())
        {
-            stack.push(revStack.pop());
+           
+            int oldTop = revStack.pop();
+            stack.push(oldTop);
        }
         printStackRecursive(stack);
         System.out.println("Your recursive reversed stack: " + revStack.toString());
@@ -68,6 +71,7 @@ public class OperationsForStack {
             revStack.push(stack.pop());
        }
        System.out.println("Your iterative reversed stack: " + revStack.toString());
+       
     }
     /**
      * Method will call itself while it pops from the stack 
@@ -77,7 +81,10 @@ public class OperationsForStack {
      */
     private void printStackRecursive(Stack stack)
     {
-        revStack.push(stack.pop());
-        printStackRecursive(stack); 
+        while(!stack.isEmpty())
+        {
+            revStack.push(stack.pop());
+            printStackRecursive(stack); 
+        }
     }
 }

@@ -2,6 +2,7 @@
 package Data;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * Generalized queue of a generic type to make it reusable for other inputs.
@@ -28,12 +29,12 @@ public class GeneralizedQueue<Element> implements Queue<Element>
      */
     @Override
     public void enqueue(Element element) {
-        Node newNode = new Node(element, null);
+        Node newNode = new Node(element);
         if (first == null)
         {
-            
             newNode.setNext(newNode);
             first = last = newNode;
+            last.setNext(null);
         }
         else
         {
@@ -85,25 +86,31 @@ public class GeneralizedQueue<Element> implements Queue<Element>
      */
     public String dequeueAtPosition(int pos)
     {
+        pos = pos -1;
         String removed = "";
         if (this.size == 0) 
         {
             System.out.println("List is empty.");
 	}
 
-        if (pos < 0 || pos >= this.size) {
+        else if (pos < 0 || pos >= this.size) {
                 System.out.println("Invalid Index.");
+                
         }
 
-        if (pos == 0) 
+        else if (pos == 0) 
         {
-            dequeue();
+            Node firstNode = first.getNext();
+            first = null;
+            first = firstNode;
+            this.size --;
+           // dequeue();
         } 
-        else if (pos == this.size - 1) 
+        else if (pos == this.size) 
         {
             dequeue();
 
-        } 
+        }
         else 
         {
             Node nodeBefore = getNodeAt(pos - 1);
@@ -144,34 +151,27 @@ public class GeneralizedQueue<Element> implements Queue<Element>
     public int getSize() {
         return size;
     }
-    
-    /**
-     * 
-     * @return s a stringrepresentation of this queue.
-     */
     @Override
     public String toString() 
     {
-        String result = "";
-        Node current = first;
-        int index = 0;
-        while (index < this.size) 
-        {
-            result += "[";
-            result += current.getElement();
-            current = current.getNext();
-            result += "]";
-            index++;
-            if(index < this.size)
-            {
-                result += ", ";
-            }
+       StringBuilder sb = new StringBuilder();
+       int index = 0;
 
-        }
-        return result;
+       for(Element e : this)
+       {
+           sb.append("[").append(e).append("]");
+           index++;
+           if(index < size)
+           {
+               sb.append(", ");
+           }  
+       }
+        return sb.toString();
     }
+   
+   
     /**
-     * Implemented Iterator that creates a private iterator for this queue that starts at first.
+     * Implemented Iterator that creates a private iterator for this queue that starts at current.
      * @return 
      */
     @Override
@@ -182,31 +182,35 @@ public class GeneralizedQueue<Element> implements Queue<Element>
     private class QueueIterator<Element> implements Iterator<Element>
     {
  
-        private GeneralizedQueue<Element>.Node first;
+        private GeneralizedQueue<Element>.Node current;
          
         public QueueIterator(GeneralizedQueue<Element>.Node first) 
         {
             super();
-            this.first = first;
+            this.current = first;
         }
  
         @Override
         public boolean hasNext() 
         {
-            return first !=null;
+            return current != null;
+                  
         }
  
         @Override
         public Element next() 
         {
-            if(first != null){
+            if(current != null)
+            {
                 
-                Element element = first.element;
-                first = first.next;
+                Element element = current.getElement();
+                current = current.getNext();
                 return element;
-            }else {
-                throw new RuntimeException("Iterator Exhuested Exception");
             }
+              
+            else
+                throw new NoSuchElementException ("element doesent exist");
+            
         }       
     }
     /**

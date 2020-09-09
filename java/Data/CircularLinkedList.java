@@ -43,7 +43,7 @@ public class CircularLinkedList<Element> implements Queue<Element>
             {
                 newNode.setNextLink(head);
                 head = newNode;
-                tail.setNextLink(newNode);
+                tail.setNextLink(head);
 
             }
             size ++;
@@ -110,12 +110,15 @@ public class CircularLinkedList<Element> implements Queue<Element>
             default:
             
             Node current = head;
+            Node beforeCurrent = current;
 
             while(current != tail)
             {
+                beforeCurrent = current;
                 current = current.next;
+                
             }
-            tail = current;
+            tail = beforeCurrent;
             tail.setNextLink(head);   
             size--;
             break;
@@ -156,30 +159,28 @@ public class CircularLinkedList<Element> implements Queue<Element>
     {
         return size;
     }
+  
     
-
  
     @Override
     public String toString() 
     {
-        String result = "";
-        Node current = head;
-        int index = 0;
-        while (index < this.size) 
-        {
-            result += "[";
-            result += current.getElement();
-            current = current.getNextLink();
-            result += "]";
-            index++;
-            if(index < this.size)
-            {
-                result += ", ";
-            }
-
-        }
-        return result;
+       StringBuilder sb = new StringBuilder();
+       int index = 0;
+       for(Element e: this)
+       {
+           sb.append("[").append(e).append("]");
+           index++;
+           if(index < size)
+           {
+               sb.append(", ");
+               
+           }
+       }
+       
+        return sb.toString();
     }
+  
      
     private class Node
     {
@@ -228,30 +229,36 @@ public class CircularLinkedList<Element> implements Queue<Element>
     private class QueueIterator<Element> implements Iterator<Element>
     {
  
-        private CircularLinkedList<Element>.Node head;
+        private CircularLinkedList<Element>.Node current;
+        boolean visitingAgain = false;
          
         public QueueIterator(CircularLinkedList<Element>.Node head) 
         {
             super();
-            this.head = head;
+            this.current = head;
         }
  
         @Override
         public boolean hasNext() 
         {
-            return head !=null;
+            if(isEmpty() || (current == head && visitingAgain))
+            {
+                return false;
+            }
+            visitingAgain = true;
+            return true;
         }
  
         @Override
         public Element next() 
         {
-            if(head != null){
+            if(current != null){
                 
-                Element element = head.element;
-                head = head.next;
+                Element element = current.element;
+                current = current.next;
                 return element;
             }else {
-                throw new RuntimeException("Iterator Exhuested Exception");
+                throw new RuntimeException("Can't iterate!");
             }
         }       
     }

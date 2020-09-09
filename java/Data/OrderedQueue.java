@@ -13,7 +13,7 @@ import java.util.Iterator;
  * @author Frida Johansson
  * @param <Element> represents the content. 
  */
-public class OrderedQueue <Element extends Comparable<Element>> implements Queue<Element>
+public class OrderedQueue <Element extends Comparable<Element>> 
 {
     private Node front;
     
@@ -27,7 +27,7 @@ public class OrderedQueue <Element extends Comparable<Element>> implements Queue
      * Adds element to the queue in ascending order. 
      * @param element represents the element from the user
      */
-    @Override
+    
     public void enqueue(Element element) 
     {
         Node newNode = new Node(element);
@@ -67,7 +67,7 @@ public class OrderedQueue <Element extends Comparable<Element>> implements Queue
     /**
      * Removes the least integer of the queue. 
      */
-    @Override
+    
     public void dequeue() 
     {
         if(isEmpty())
@@ -82,7 +82,7 @@ public class OrderedQueue <Element extends Comparable<Element>> implements Queue
         
     }
    
-    @Override
+    
     public String peek() {
         if(front != null) 
         {
@@ -92,15 +92,11 @@ public class OrderedQueue <Element extends Comparable<Element>> implements Queue
       
     }
 
-    @Override
+    
     public boolean isEmpty() {
         return front == null;
     }
 
-    @Override
-    public int getSize() {
-        return 1;
-    }
     /**
      * Represents a string representation of this queue.
      * @return 
@@ -108,27 +104,22 @@ public class OrderedQueue <Element extends Comparable<Element>> implements Queue
     @Override
     public String toString() 
     {
-        String result = "";
+        StringBuilder sb = new StringBuilder();
         Node current = front;
         while (current != null) 
         {
-            result += "[";
-            result += current.getElement();
+            sb.append("[").append(current.getElement()).append("]");
             current = current.getNext();
-            result += "]";
- 
+   
             if(current != null)
             {
-                result += ", ";
+                sb.append(", ");
             }
 
         }
-        return result;
+        return sb.toString();
     }
-    @Override
-    public Iterator<Element> iterator() {
-        return null;
-    }
+    
     /**
      * Nested prvate class Node the represents the content of this queue. 
      */

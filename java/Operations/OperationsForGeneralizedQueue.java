@@ -28,7 +28,7 @@ public class OperationsForGeneralizedQueue {
         do    
         {
             
-            System.out.println("\nCircular Doubly Linked List Operations\n");
+            System.out.println("\nGeneralized queue Operations\n");
             System.out.println("\nPlease choose your operation from menu.\n");
             System.out.println("1. Insert integer in queue");
             System.out.println("2. Remove the last added integer of the queue");
@@ -42,6 +42,7 @@ public class OperationsForGeneralizedQueue {
             case 1 : 
                 try
                 {
+                    System.out.println("Enter a integer to insert: ");
                     genQueue.enqueue(scanner.nextInt());
                     System.out.println("Your queue: " + genQueue.toString());
                     break; 

@@ -29,7 +29,7 @@ public class OperationsCircLinkList
         do    
         {
             
-            System.out.println("\nCircular Doubly Linked List Operations\n");
+            System.out.println("\nCircular Linked List Operations\n");
             System.out.println("\nPlease choose your operation from menu.\n");
             System.out.println("1. Insert integer in front of queue");
             System.out.println("2. Remove the first integer of the queue");

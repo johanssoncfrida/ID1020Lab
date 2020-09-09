@@ -79,8 +79,8 @@ public class DoubleLinkedCircularList<Element> implements Queue<Element>
     }
      
     /**
-     * Method that allow user to peek at the head of the queue. 
-     * @return the head
+     * Method that allow user to peek at the current of the queue. 
+     * @return the current
      */
     @Override
     public String peek() 
@@ -111,23 +111,20 @@ public class DoubleLinkedCircularList<Element> implements Queue<Element>
     @Override
     public String toString() 
     {
-        String result = "";
-        Node current = head;
-        int index = 0;
-        while (index < this.size) 
-        {
-            result += "[";
-            result += current.getElement();
-            current = current.getNextLink();
-            result += "]";
-            index++;
-            if(index < this.size)
-            {
-                result += ", ";
-            }
-
-        }
-        return result;
+       StringBuilder sb = new StringBuilder();
+       int index = 0;
+       for(Element e: this)
+       {
+           sb.append("[").append(e).append("]");
+           index++;
+           if(index < size)
+           {
+               sb.append(", ");
+               
+           }
+       }
+       
+        return sb.toString();
     }
     /**
      * A privated nested class Node that represents the content of the queue.
@@ -179,7 +176,7 @@ public class DoubleLinkedCircularList<Element> implements Queue<Element>
         }
     }
     /**
-     * Implemented Iterator that creates a private iterator for this queue that starts at head.
+     * Implemented Iterator that creates a private iterator for this queue that starts at current.
      * @return 
      */
     @Override
@@ -191,26 +188,32 @@ public class DoubleLinkedCircularList<Element> implements Queue<Element>
     private class QueueIterator<Element> implements Iterator<Element>
     {
  
-        private DoubleLinkedCircularList<Element>.Node head;
+        private DoubleLinkedCircularList<Element>.Node current;
+        boolean visitingAgain = false;
          
         public QueueIterator(DoubleLinkedCircularList<Element>.Node head) 
         {
             super();
-            this.head = head;
+            this.current = head;
         }
  
         @Override
         public boolean hasNext() 
         {
-            return head !=null;
+            if(isEmpty() || (current == head && visitingAgain))
+            {
+                return false;
+            }
+            visitingAgain = true;
+            return true;
         }
  
         @Override
         public Element next() 
         {
-            if(head != null){
-                Element element = head.element;
-                head = head.next;
+            if(current != null){
+                Element element = current.element;
+                current = current.next;
                 return element;
             }else {
                 throw new RuntimeException("Can't iterate");
