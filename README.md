@@ -1,3 +1,3 @@
 # Laboration1
 
-Lab assignment for course IS1200, Datateknik
+Lab assignment for course ID1020, Algoritmer och Datastrukturer
